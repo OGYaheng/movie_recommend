@@ -1,14 +1,11 @@
 import pandas as pd
 from sklearn.neighbors import NearestNeighbors
 
-# 載入電影資料集（user評分）
-movie_data = pd.read_csv('movies.csv')  # 包含欄位: movie_id, title
-ratings_data = pd.read_csv('ratings.csv')  # 包含欄位: user_id, movie_id, rating
+movie_data = pd.read_csv('movies.csv')  
+ratings_data = pd.read_csv('ratings.csv')  
 
-# 創建user-電影評分矩陣（pivot 表格）
 user_movie_ratings = ratings_data.pivot(index='user_id', columns='movie_id', values='rating').fillna(0)
 
-# 使用 Nearest Neighbors 算法來做推薦
 model = NearestNeighbors(metric='cosine', algorithm='brute')
 model.fit(user_movie_ratings.values.T)
 
@@ -37,7 +34,6 @@ def recommend_movies(movie_title, n_recommendations=5):
     
     return recommended_movies
 
-# 主程式：要求user輸入電影名稱並給出推薦
 def main():
     print("歡迎來到電影推薦系統！")
     movie_title = input("請輸入你喜歡的電影名稱: ")
